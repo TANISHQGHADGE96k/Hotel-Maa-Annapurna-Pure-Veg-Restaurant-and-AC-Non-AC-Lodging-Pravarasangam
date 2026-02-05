@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-beige-50 text-gray-900 font-sans;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-heading;
+    }
+}
+
+@layer components {
+
+    /* Button Styles */
+    .btn-primary {
+        @apply bg-gold-500 hover:bg-gold-600 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5;
+    }
+
+    .btn-secondary {
+        @apply bg-brown-500 hover:bg-brown-600 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5;
+    }
+
+    .btn-outline {
+        @apply border-2 border-gold-500 text-gold-600 hover:bg-gold-500 hover:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300;
+    }
+
+    /* Card Styles */
+    .card {
+        @apply bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl;
+    }
+
+    /* Input Styles */
+    .input-field {
+        @apply w-full px-4 py-3 border-2 border-beige-300 rounded-lg focus:outline-none focus:border-gold-500 transition-colors duration-300;
+    }
+
+    /* Section Styles */
+    .section-padding {
+        @apply py-16 px-4 md:px-8 lg:px-16;
+    }
+
+    /* Container */
+    .container-custom {
+        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
+}
+
+@layer utilities {
+    .text-gradient {
+        @apply bg-gradient-to-r from-gold-500 to-brown-500 bg-clip-text text-transparent;
+    }
+
+    .bg-pattern {
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+}

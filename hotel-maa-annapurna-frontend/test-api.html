@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .test-box {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔧 Hotel Website - API Connection Test</h1>
+
+    <div class="test-box">
+        <h2>1. Backend Health Check</h2>
+        <button onclick="testHealth()">Test Backend Connection</button>
+        <div id="health-result"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>2. Test Rooms API</h2>
+        <button onclick="testRooms()">Fetch Rooms</button>
+        <div id="rooms-result"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>3. Test Gallery API</h2>
+        <button onclick="testGallery()">Fetch Gallery</button>
+        <div id="gallery-result"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>4. Test Reviews API</h2>
+        <button onclick="testReviews()">Fetch Reviews</button>
+        <div id="reviews-result"></div>
+    </div>
+
+    <div class="test-box info">
+        <h3>📋 Troubleshooting Checklist:</h3>
+        <ul>
+            <li>✅ Backend server running? (Check terminal for port 5000)</li>
+            <li>✅ MySQL database running?</li>
+            <li>✅ CORS configured correctly?</li>
+            <li>✅ Network connection working?</li>
+        </ul>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+
+        async function testHealth() {
+            const result = document.getElementById('health-result');
+            result.innerHTML = '<div class="status info">Testing...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+
+                if (data.success) {
+                    result.innerHTML = `
+                        <div class="status success">
+                            ✅ Backend is running!
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    result.innerHTML = `<div class="status error">❌ Backend responded but with error</div>`;
+                }
+            } catch (error) {
+                result.innerHTML = `
+                    <div class="status error">
+                        ❌ Cannot connect to backend!
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p><strong>Make sure:</strong></p>
+                        <ul>
+                            <li>Backend server is running on port 5000</li>
+                            <li>MySQL is running</li>
+                            <li>No firewall blocking the connection</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        async function testRooms() {
+            const result = document.getElementById('rooms-result');
+            result.innerHTML = '<div class="status info">Testing...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/api/rooms`);
+                const data = await response.json();
+
+                if (data.success && data.rooms) {
+                    result.innerHTML = `
+                        <div class="status success">
+                            ✅ Rooms API working!
+                            <p><strong>Found ${data.rooms.length} room(s)</strong></p>
+                            <pre>${JSON.stringify(data.rooms, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <div class="status error">
+                            ⚠️ API responded but no rooms found
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testGallery() {
+            const result = document.getElementById('gallery-result');
+            result.innerHTML = '<div class="status info">Testing...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/api/gallery`);
+                const data = await response.json();
+
+                if (data.success && data.gallery) {
+                    result.innerHTML = `
+                        <div class="status success">
+                            ✅ Gallery API working!
+                            <p><strong>Found ${data.gallery.length} image(s)</strong></p>
+                            <pre>${JSON.stringify(data.gallery, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <div class="status error">
+                            ⚠️ API responded but no gallery items found
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testReviews() {
+            const result = document.getElementById('reviews-result');
+            result.innerHTML = '<div class="status info">Testing...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/api/reviews`);
+                const data = await response.json();
+
+                if (data.success && data.reviews) {
+                    result.innerHTML = `
+                        <div class="status success">
+                            ✅ Reviews API working!
+                            <p><strong>Found ${data.reviews.length} review(s)</strong></p>
+                            <pre>${JSON.stringify(data.reviews, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <div class="status error">
+                            ⚠️ API responded but no reviews found
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        // Auto-test on page load
+        window.onload = () => {
+            testHealth();
+        };
+    </script>
+</body>
+
+</html>

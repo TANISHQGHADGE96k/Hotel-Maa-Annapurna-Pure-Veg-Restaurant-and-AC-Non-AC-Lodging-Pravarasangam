@@ -1,0 +1,5 @@
+// Configuration
+const CONFIG = {
+    API_URL: 'http://localhost:5000/api',
+    SITE_URL: 'http://localhost:5173'
+};
